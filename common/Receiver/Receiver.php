@@ -32,7 +32,7 @@ class Receiver implements ReceiverInterface
         $path = Yii::getAlias('@uploads') . DIRECTORY_SEPARATOR . $fileName;
 
         if (!file_exists($path)) {
-            throw new ReceiverException('Type "url" must be a link to a json file.');
+            throw new ReceiverException('Type "path" must be a path to a json file.');
         }
 
         return $this->getContent($path);
