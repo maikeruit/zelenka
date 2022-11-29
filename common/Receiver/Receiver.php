@@ -7,29 +7,30 @@ use Yii;
 
 class Receiver implements ReceiverInterface
 {
-    /**
-     * @param string $url
-     * @return array
-     * @throws ReceiverException
-     */
-    public function receiveFromUrl(string $url): array
+    public function __construct(private string $path)
     {
-        if (!filter_var($url, FILTER_VALIDATE_URL)) {
-            throw new ReceiverException('Type "url" must be a link to a json file.');
-        }
-
-        return $this->getContent($url);
     }
 
     /**
-     * @param string $path
      * @return array
      * @throws ReceiverException
      */
-    public function receiverFromPath(string $path): array
+    public function receiveFromUrl(): array
     {
-        $fileName = 'sample' . DIRECTORY_SEPARATOR . 'orders.json';
-        $path = Yii::getAlias('@uploads') . DIRECTORY_SEPARATOR . $fileName;
+        if (!filter_var($this->path, FILTER_VALIDATE_URL)) {
+            throw new ReceiverException('Type "url" must be a link to a json file.');
+        }
+
+        return $this->getContent($this->path);
+    }
+
+    /**
+     * @return array
+     * @throws ReceiverException
+     */
+    public function receiverFromPath(): array
+    {
+        $path = Yii::getAlias('@uploads') . DIRECTORY_SEPARATOR . $this->path;
 
         if (!file_exists($path)) {
             throw new ReceiverException('Type "path" must be a path to a json file.');

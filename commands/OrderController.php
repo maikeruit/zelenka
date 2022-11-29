@@ -15,10 +15,10 @@ class OrderController extends Controller
     /**
      * @throws ReceiverException
      */
-    public function actionUpdateNet(string $path): int
+    public function actionUpdateNet(string $url): int
     {
-        $receiver = new Receiver();
-        $items = $receiver->receiveFromUrl($path);
+        $receiver = new Receiver($url);
+        $items = $receiver->receiveFromUrl();
 
         $parser = new Parser();
         $parser->execute($items['orders']);
@@ -31,8 +31,8 @@ class OrderController extends Controller
      */
     public function actionUpdateLocal(string $path): int
     {
-        $receiver = new Receiver();
-        $items = $receiver->receiverFromPath($path);
+        $receiver = new Receiver($path);
+        $items = $receiver->receiverFromPath();
 
         $parser = new Parser();
         $parser->execute($items['orders']);
